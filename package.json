@@ -1,0 +1,31 @@
+{
+  "name": "nasa-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install-server": "npm install --prefix server",
+    "install-client": "npm install --prefix client",
+    "install": "npm run install-server && npm run install-client",
+    "serverAlt": "cd server && npm run watch",
+    "server": "npm run watch --prefix server",
+    "clientAlt": "cd client && npm start",
+    "client": "npm start --prefix client",
+    "commentOnPrefix": "prefix will run the command on the specified folder",
+    "watch": "npm run server & npm run client",
+    "commentOnSinge&": "single & symbole runs commands simultaneously",
+    "commentOnWatch": "on Windows, the npm run watch command may not start both your client and server, depending on your shell. To solve this: You can use an NPM package like concurrently or npm-run-all instead of the & symbol in the npm run watch command. Or if you have the bash shell installed on your machine (for example, through Git for Windows), set the default shell used by NPM to the bash shell by typing: npm config set script-shell bash in your terminal. All commands in your package.json will now run in a bash shell.",
+    "test": "npm run test --prefix server && npm run test --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarcoC1796/Nasa-Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MarcoC1796/Nasa-Project/issues"
+  },
+  "homepage": "https://github.com/MarcoC1796/Nasa-Project#readme"
+}
