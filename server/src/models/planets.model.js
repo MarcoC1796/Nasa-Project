@@ -1,5 +1,6 @@
-const { parse } = require("csv-parse");
 const fs = require("fs"); // built in file system module
+const path = require("path");
+const { parse } = require("csv-parse");
 
 const habitablePlanets = [];
 
@@ -12,31 +13,35 @@ function isHabitablePlanet(planet) {
   );
 }
 
-fs.createReadStream("./../data/kepler_data.csv") // will read data as Buffers (collections of bytes)
-  // a pipe is an additional processing step of the data stream
-  .pipe(
-    parse({
-      comment: "#",
-      columns: true, // will return each row in the csv file as a JavaScript Object
-    })
-  )
-  .on("data", (data) => {
-    if (isHabitablePlanet(data)) {
-      habitablePlanets.push(data);
-    }
-  })
-  .on("error", (err) => {
-    console.log(err);
-  })
-  .on("end", () => {
-    console.log(
-      habitablePlanets.map((planet) => {
-        return planet["kepler_name"];
+function loadPlanetsData() {
+  return new Promise((resolve, reject) => {
+    fs.createReadStream(
+      path.join(__dirname, "..", "..", "data", "kepler_data.csv")
+    ) // will read data as Buffers (collections of bytes)
+      // a pipe is an additional processing step of the data stream
+      .pipe(
+        parse({
+          comment: "#",
+          columns: true, // will return each row in the csv file as a JavaScript Object
+        })
+      )
+      .on("data", (data) => {
+        if (isHabitablePlanet(data)) {
+          habitablePlanets.push(data);
+        }
       })
-    );
-    console.log(`${habitablePlanets.length} habitable planets found!`);
+      .on("error", (err) => {
+        console.log(err);
+        reject(err);
+      })
+      .on("end", () => {
+        console.log(`${habitablePlanets.length} habitable planets found!`);
+        resolve();
+      });
   });
+}
 
 module.exports = {
+  loadPlanetsData,
   planets: habitablePlanets,
 };
